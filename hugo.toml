@@ -1,6 +1,6 @@
 ######################## default configuration ####################
 # The base URL of your site (required). This will be prepended to all relative URLs.
-baseURL = "https://pandalearnstocode.github.io/goforoffbeat/"
+baseURL = "https://goforoffbeat.com/"
 # Title of your website (required).
 title = "Hugoplate"
 # Your theme name
