@@ -28,7 +28,6 @@
 
 ## 🎁 What's Included
 
-
 We have included almost everything you need to start your Hugo project. Let's see what's included in this template:
 
 ### 📌 Key Features
