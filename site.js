@@ -18,7 +18,20 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(toggle&&links)toggle.addEventListener('click',()=>{const open=links.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu')});
   const storyRoot=document.querySelector('#journey-story');
   const enquiryForm=document.querySelector('.contact-form');
-  if(enquiryForm){const params=new URLSearchParams(location.search);const destination=enquiryForm.querySelector('[name="Destination"]');const request=params.get('journey')||params.get('destination');if(destination&&request)destination.value=request;}
+  if(enquiryForm){
+    const params=new URLSearchParams(location.search);const destination=enquiryForm.querySelector('[name="Destination"]');const request=params.get('journey')||params.get('destination');if(destination&&request)destination.value=request;
+    enquiryForm.addEventListener('submit',event=>{
+      event.preventDefault();
+      if(!enquiryForm.reportValidity())return;
+      const fields=new FormData(enquiryForm);
+      const name=fields.get('Name')||'';
+      const subject=`Travel enquiry${fields.get('Destination')?` — ${fields.get('Destination')}`:''}`;
+      const body=[`Name: ${name}`,`Email: ${fields.get('Email')||''}`,`Phone / WhatsApp: ${fields.get('Phone')||''}`,`Destination: ${fields.get('Destination')||''}`,'',`Message:`,fields.get('Message')||''].join('\n');
+      const hint=enquiryForm.querySelector('.form-hint');
+      if(hint)hint.textContent='Your email app should open with these details. Press Send there to complete your enquiry.';
+      window.location.href=`mailto:officialgoforoffbeat@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
   if(storyRoot){
     const params=new URLSearchParams(location.search);const key=params.get('place');const story=journeyStories[key];
     if(!story){storyRoot.innerHTML='<section class="story-hero story-not-found"><div class="wrap story-hero-inner"><span class="eyebrow">Journey not found</span><h1>Let’s find another way.</h1><p>Choose an inbound or outbound journey to explore.</p><a class="gold-button" href="destinations.html">Browse journeys →</a></div></section>';return}
