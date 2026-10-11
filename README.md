@@ -1,1 +1,14 @@
-# goforoffbeat
+# GoForOffbeat
+
+A responsive, multi-page travel website for GoForOffbeat, with a focus on West Bengal and North Bengal and trip planning across India.
+
+## Pages
+
+- `index.html` — home, featured destinations and guest story area
+- `destinations.html` — Bengal and pan-India destinations
+- `packages.html` — suggested itineraries and departure dates
+- `about.html` — managed travel services and planning approach
+- `feedback.html` — guest feedback form
+- `enquiry.html` — trip, hotel and transport enquiry form
+
+Open `index.html` in a browser to preview. The forms currently provide an in-page confirmation; connect a form service or backend to receive submissions.
