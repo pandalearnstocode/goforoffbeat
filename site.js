@@ -4,11 +4,23 @@ if (menuButton && navLinks) {
   menuButton.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
     menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    menuButton.textContent = open ? '×' : '☰';
   });
   navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
     navLinks.classList.remove('open');
     menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open navigation');
+    menuButton.textContent = '☰';
   }));
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !navLinks.classList.contains('open')) return;
+    navLinks.classList.remove('open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open navigation');
+    menuButton.textContent = '☰';
+    menuButton.focus();
+  });
 }
 
 document.querySelectorAll('.package-card').forEach(card => {
