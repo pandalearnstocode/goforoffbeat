@@ -1,70 +1,43 @@
-const menuButton = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav-links');
-if (menuButton && navLinks) {
-  menuButton.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('open');
-    menuButton.setAttribute('aria-expanded', String(open));
-    menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
-    menuButton.textContent = open ? '×' : '☰';
-  });
-  navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', 'Open navigation');
-    menuButton.textContent = '☰';
-  }));
-  document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || !navLinks.classList.contains('open')) return;
-    navLinks.classList.remove('open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.setAttribute('aria-label', 'Open navigation');
-    menuButton.textContent = '☰';
-    menuButton.focus();
-  });
-}
+const journeyStories={
+  'north-india':{title:'North India',region:'Inbound · India',intro:'High mountain air, old cities and wide desert skies. Build a journey that takes in the landscapes and living traditions that make the north feel endlessly varied.',heading:'From Himalayan mornings to evenings in the old city',story:'Begin with time to settle into the altitude and rhythm of the mountains. Follow a scenic route through hill towns and lakeside valleys, then balance the open landscapes with a locally guided heritage walk and a relaxed final night in the city. The route can be shaped around a short hill escape or a longer high-altitude adventure.',hero:'assets/north_india.jpeg',gallery:[['assets/slide-ladakh-highland-wetland.jpg.jpeg','Highland wetlands and mountain light'],['assets/nepal.jpeg','Himalayan horizons'],['assets/slide-kanchenjunga-mountain-view.jpg.jpeg','A clear morning in the high country']],days:[['Arrive and settle','Keep the first day light. Meet your local coordinator, enjoy an easy orientation and leave time to adjust to the altitude if your route begins in the mountains.'],['Take the scenic way','Travel between valleys with planned breaks for viewpoints, small settlements and a locally hosted lunch.'],['Choose your day','Add a gentle lakeside walk, a cultural visit or a longer guided trail to match your pace.'],['A slower city finish','Return with time for a heritage quarter, regional food and a restful final evening.']]},
+  'north-bengal':{title:'North Bengal',region:'Inbound · India',intro:'Tea gardens, forest-edge stays and the first great views of the Himalaya. North Bengal rewards a slower route with a little room between its hill towns and green foothills.',heading:'Tea-country walks and the quiet edge of the forest',story:'Settle into Darjeeling or Kalimpong before moving at an unhurried pace through tea country. Spend a morning with a local guide, leave space for the weather to open the mountain views, then descend towards the Dooars for riverside time and forest-edge experiences. Each stay is chosen to keep transfers comfortable.',hero:'assets/north_bengal.jpeg',gallery:[['assets/slide-kanchenjunga-mountain-view.jpg.jpeg','The mountains at first light'],['assets/Birding & Nature Expeditions (Image Use).jpeg','A guided walk among the trees'],['assets/Wildlife & Wilderness Safaries (Image Use).jpeg','Time in the forest landscape']],days:[['Arrive in the hills','Transfer from Bagdogra or New Jalpaiguri and settle in. Keep the afternoon open for a gentle town walk and a warm cup of local tea.'],['Tea gardens and viewpoints','Explore a tea estate with a guide, visit a quiet viewpoint and make time for the small lanes and local cafés.'],['Cross to the foothills','Take the scenic drive down to the Dooars, with stops along the way and a restful evening near the forest.'],['Riverside morning','Enjoy an easy nature walk or a quiet riverside morning before your onward transfer.']]},
+  'east-india':{title:'East India',region:'Inbound · India',intro:'River cities, crafts, coastlines and warm evenings. Explore East India through its food, festivals and the everyday stories that connect its landscapes.',heading:'A thoughtful route through river, craft and coast',story:'Pair a few days in Kolkata with a slower onward journey to suit your interests. Meet artisans in their working neighbourhoods, make room for a riverfront evening and choose between a creative retreat, temple-town heritage or a coastal pause. Your itinerary is planned around the season and the pace you prefer.',hero:'assets/east_india.jpeg',gallery:[['assets/Bespoke Journeys (Image Use).jpeg','Meet the makers and musicians'],['assets/slide-south-india.jpeg','Living performance traditions'],['assets/west_india.jpeg','A quieter countryside pause']],days:[['Arrive in Kolkata','Settle in and get your bearings with a neighbourhood walk and a first taste of Bengali cooking.'],['The city and its makers','Explore the city with a local host, visit a craft neighbourhood and leave the afternoon unplanned.'],['Choose your onward story','Travel towards a cultural retreat, historic town or the coast, allowing time for the journey itself.'],['A gentle return','Enjoy a final local breakfast and a flexible transfer for your onward connection.']]},
+  'north-east-india':{title:'North East India',region:'Inbound · India',intro:'Cloud forests, river valleys and distinct local cultures make every leg of the Northeast feel different. Take the time to travel between them with care.',heading:'Waterfall country, village stays and open skies',story:'Use Guwahati as a comfortable starting point, then head into the hills with a local driver and guide. Build in time for scenic roads, village visits and short walks rather than trying to cover too much ground. Depending on the season and your interests, the route can lean towards waterfalls, living-root-bridge country, tea landscapes or a quieter highland stay.',hero:'assets/north_east_india.jpeg',gallery:[['assets/north_bengal.jpeg','Green hills in the eastern Himalaya'],['assets/Birding & Nature Expeditions (Image Use).jpeg','A forest trail with a local guide'],['assets/slide-ladakh-highland-wetland.jpg.jpeg','Highland landscapes worth taking slowly']],days:[['Arrive in Guwahati','Meet your local coordinator and keep the first evening restful after your journey.'],['Travel into the hills','Take the road to your base with scenic stops and a relaxed lunch along the way.'],['Walk with a local guide','Choose a nature trail, waterfall visit or village experience according to weather and access.'],['Leave space for the view','Enjoy a slow morning before returning towards your departure point.']]},
+  'west-india':{title:'West India',region:'Inbound · India',intro:'From lively city streets to quiet desert sunsets and coastal pauses, West India invites a journey with contrasting moods and memorable local flavours.',heading:'Colourful cities, craft traditions and open horizons',story:'Start with a few days in a city that draws you in, then travel at a measured pace towards a heritage stay or the coast. A locally guided walk, a hands-on craft visit and a meal built around regional cooking bring the route to life. We can keep the plan compact or connect several landscapes over a longer holiday.',hero:'assets/west_india.jpeg',gallery:[['assets/Bespoke Journeys (Image Use).jpeg','A musical evening in Rajasthan'],['assets/outbound_banner.jpeg','City lights from above'],['assets/east_india.jpeg','A golden-hour gathering by the water']],days:[['Arrive and settle','Choose a central, characterful stay and take the first evening at your own pace.'],['Explore with a local host','Walk through a historic quarter, meet a craftsperson and pause for a regional lunch.'],['Travel to a slower setting','Continue to a heritage property, a countryside retreat or the coast with time for stops.'],['An easy finish','Enjoy a relaxed breakfast and a final unhurried hour before departure.']]},
+  'south-india':{title:'South India',region:'Inbound · India',intro:'Temple towns, coastal backwaters, fragrant kitchens and green hill country. South India is best experienced with time to pause between places.',heading:'From cultural mornings to a backwater evening',story:'Begin in Kochi or another welcoming gateway and follow a route that balances culture with calm. Spend time with a local guide in historic streets, continue into the hills for tea and fresh air, then slow down beside the water. We keep transfers realistic and leave space for the moments that happen along the way.',hero:'assets/slide-south-india.jpeg',gallery:[['assets/north_bengal.jpeg','Tea country on a hillside'],['assets/thailand.jpeg','A quiet walk beneath the canopy'],['assets/Vietnam.jpeg','The soft light of an evening on the water']],days:[['Arrive in the gateway city','Settle in and take a gentle evening walk through the historic quarter.'],['Culture and local flavours','Explore with a local host, meet a maker and enjoy a meal that introduces the region.'],['Into the hills','Travel to tea country with scenic breaks and a relaxed afternoon at your stay.'],['Backwater pause','Continue to the water for a hosted stay and a slow boat experience before departure.']]},
+  bhutan:{title:'Bhutan',region:'Outbound · Himalayan kingdom',intro:'A journey through Bhutan moves between monastery courtyards, forested valleys and warm, unhurried hospitality.',heading:'A gentle passage through the Paro and Punakha valleys',story:'Start in Paro with time to adjust to the altitude and settle into the rhythm of the valley. Explore Thimphu with a local guide, then cross the mountain pass towards Punakha for riverside walks and a quieter stay. The route is designed to balance cultural visits with rest, mountain scenery and time to simply take it in.',hero:'assets/bhutan.jpeg',gallery:[['assets/nepal.jpeg','A Himalayan view from the trail'],['assets/slide-kanchenjunga-mountain-view.jpg.jpeg','Mountain mornings'],['assets/slide-luxury-snow-jacuzzi-mountain-view.jpg.jpeg','A warm retreat after the day']],days:[['Arrive in Paro','Meet your local host, settle into your stay and keep the first afternoon easy.'],['Paro valley and Thimphu','Explore at a comfortable pace with a local guide and time for a traditional meal.'],['Cross the pass to Punakha','Enjoy the changing mountain scenery, with planned stops and an unhurried arrival.'],['Valley walk and return','Choose a gentle riverside walk before travelling back towards Paro.']]},
+  nepal:{title:'Nepal',region:'Outbound · Himalaya',intro:'Ancient city squares, lakeside sunsets and Himalayan horizons come together in a journey that can be as active or as easygoing as you like.',heading:'Kathmandu culture, Pokhara lake and mountain air',story:'Begin with a guided introduction to Kathmandu’s living heritage, then travel to Pokhara for a slower lakeside stay. Add a sunrise viewpoint or a gentle foothill walk if you wish, and keep a final day flexible for local food, craft and rest. The sample route avoids rushing between the city and the mountains.',hero:'assets/nepal.jpeg',gallery:[['assets/bhutan.jpeg','Monasteries and Himalayan valleys'],['assets/north_india.jpeg','A highland trail at your own pace'],['assets/slide-ladakh-highland-wetland.jpg.jpeg','Open mountain country']],days:[['Welcome to Kathmandu','Settle in and take an easy orientation walk through a nearby neighbourhood.'],['Heritage with a local guide','Explore historic courtyards and temples with time for questions and a relaxed lunch.'],['Travel to Pokhara','Take the scenic transfer and spend the evening beside the lake.'],['Choose a mountain morning','Opt for a viewpoint, a short walk or a slow café morning before your return.']]},
+  'sri-lanka':{title:'Sri Lanka',region:'Outbound · Island journey',intro:'A compact island with a generous mix of tea country, heritage and warm coastline. Link the regions by rail and road, with time to enjoy the journey between them.',heading:'Hill-country rail, heritage lanes and the sea',story:'Travel inland from Colombo towards Kandy and the cool tea country, then continue through the hills to the coast. The journey balances historic sites with scenic rail or road time and relaxed evenings near the water. Choose a slower beach finish or add another night among the tea gardens.',hero:'assets/srilanka.jpeg',gallery:[['assets/Vietnam.jpeg','Evening light by the water'],['assets/thailand.jpeg','A tropical trail in the green'],['assets/slide-south-india.jpeg','Cultural performance and tradition']],days:[['Arrive in Colombo','Meet your host and spend an easy first evening near your stay.'],['Kandy and its heritage','Travel inland and explore the city with a local guide, leaving time for a quiet evening.'],['Through tea country','Continue into the hills, pausing at a tea estate and a scenic viewpoint.'],['Coast at your own pace','Finish with a relaxed stay by the sea before your onward journey.']]},
+  thailand:{title:'Thailand',region:'Outbound · Southeast Asia',intro:'A lively mix of food, temples, forest and island time. Thailand can feel wonderfully varied when the route leaves room to settle into each stop.',heading:'City flavours, a green escape and time by the sea',story:'Start with a couple of nights in Bangkok to explore its neighbourhoods and food culture with a local host. Continue north for a slower change of pace or fly south for island time. The itinerary can focus on one region or connect both with thoughtful transfer days and unhurried stays.',hero:'assets/thailand.jpeg',gallery:[['assets/slide-scuba-diving-coral-reef.jpg.jpeg','A vivid underwater escape'],['assets/outbound.jpeg','Take in the view at your own pace'],['assets/Vietnam.jpeg','Southeast Asian evenings on the water']],days:[['Arrive in Bangkok','Settle into your hotel and keep the first evening open for a nearby food walk.'],['Explore the city','Visit a temple and a local market with a guide, then enjoy a slower afternoon.'],['Change the pace','Travel north for a nature stay or continue south for a coastal escape.'],['A day to make your own','Choose a boat outing, a gentle trail or a quiet afternoon at your resort.']]},
+  vietnam:{title:'Vietnam',region:'Outbound · Southeast Asia',intro:'Old-town lanes, broad rivers and vivid food culture make Vietnam a rewarding journey from north to south, or a deeper stay in one region.',heading:'Lantern-lit evenings and a slower river rhythm',story:'Begin in Hanoi with a guided walk that introduces the city through its food and neighbourhoods. Continue towards the water for a boat-led landscape, then make time for Hoi An’s craft lanes and an easy coastal day. This route leaves enough breathing room to enjoy the transitions as much as the stops.',hero:'assets/Vietnam.jpeg',gallery:[['assets/outbound_banner.jpeg','A faraway city at golden hour'],['assets/thailand.jpeg','A green trail between destinations'],['assets/slide-scuba-diving-coral-reef.jpg.jpeg','An optional day by the sea']],days:[['Arrive in Hanoi','Settle in and discover a nearby neighbourhood with a local host.'],['City stories and food','Explore the old quarter, meet a maker and sample regional dishes along the way.'],['Journey towards the water','Continue to a bay or riverside base, with time for the view and a restful evening.'],['Hoi An at your pace','Walk the heritage lanes, choose a craft experience and leave the afternoon free.']]}
+};
 
-document.querySelectorAll('.package-card').forEach(card => {
-  const link = card.querySelector('.package-info > .text-link');
-  const title = card.querySelector('h3')?.textContent.trim();
-  const details = card.querySelectorAll('.trip-detail dd');
-  if (!link || !title || details.length < 2) return;
-  const params = new URLSearchParams({
-    trip: title,
-    destination: details[0].textContent.trim(),
-    dates: details[1].textContent.trim()
-  });
-  link.href = `enquiry.html?${params.toString()}`;
-});
-
-const tripEnquiry = document.querySelector('[data-trip-enquiry]');
-if (tripEnquiry) {
-  const params = new URLSearchParams(window.location.search);
-  const trip = params.get('trip');
-  if (trip) {
-    tripEnquiry.elements.namedItem('trip').value = trip;
-    tripEnquiry.elements.namedItem('destination').value = params.get('destination') || '';
-    tripEnquiry.elements.namedItem('service').value = 'Complete trip planning';
-    const notes = tripEnquiry.elements.namedItem('notes');
-    notes.value = `I’m interested in ${trip}${params.has('dates') ? `, suggested for ${params.get('dates')}` : ''}.`;
+document.addEventListener('DOMContentLoaded',()=>{
+  const toggle=document.querySelector('.menu-toggle');
+  const links=document.querySelector('.nav-links');
+  if(toggle&&links)toggle.addEventListener('click',()=>{const open=links.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close menu':'Open menu')});
+  const storyRoot=document.querySelector('#journey-story');
+  const enquiryForm=document.querySelector('.contact-form');
+  if(enquiryForm){const params=new URLSearchParams(location.search);const destination=enquiryForm.querySelector('[name="Destination"]');const request=params.get('journey')||params.get('destination');if(destination&&request)destination.value=request;}
+  if(storyRoot){
+    const params=new URLSearchParams(location.search);const key=params.get('place');const story=journeyStories[key];
+    if(!story){storyRoot.innerHTML='<section class="story-hero story-not-found"><div class="wrap story-hero-inner"><span class="eyebrow">Journey not found</span><h1>Let’s find another way.</h1><p>Choose an inbound or outbound journey to explore.</p><a class="gold-button" href="destinations.html">Browse journeys →</a></div></section>';return}
+    document.title=`${story.title} Journey | Go For Offbeat`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content',story.intro);
+    document.querySelector('[data-title]').textContent=story.title;document.querySelector('[data-region]').textContent=story.region;document.querySelector('[data-intro]').textContent=story.intro;document.querySelector('[data-heading]').textContent=story.heading;document.querySelector('[data-story]').textContent=story.story;
+    const isOutbound=story.region.startsWith('Outbound');const backlink=document.querySelector('[data-backlink]');backlink.href=isOutbound?'outbound.html':'destinations.html';backlink.textContent=isOutbound?'Outbound Journeys':'Inbound Journeys';
+    const hero=document.querySelector('[data-hero]');hero.src=story.hero;hero.alt=`${story.title}: ${story.intro}`;
+    const enquiry=`enquiry.html?journey=${encodeURIComponent(story.title)}`;document.querySelectorAll('[data-enquire]').forEach(a=>a.href=enquiry);
+    const gallery=document.querySelector('[data-gallery]');story.gallery.forEach(([src,caption])=>{const figure=document.createElement('figure');const img=document.createElement('img');img.src=src;img.alt=caption;img.loading='lazy';img.decoding='async';const fc=document.createElement('figcaption');fc.textContent=caption;figure.append(img,fc);gallery.append(figure)});
+    const itinerary=document.querySelector('[data-itinerary]');story.days.forEach(([title,copy])=>{const li=document.createElement('li');const h=document.createElement('h3');const p=document.createElement('p');h.textContent=title;p.textContent=copy;li.append(h,p);itinerary.append(li)});
   }
-}
-
-document.querySelectorAll('[data-local-form]').forEach(form => {
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    const status = form.querySelector('.form-status');
-    if (!status) return;
-    const name = form.querySelector('[name="name"]')?.value.trim();
-    const trip = form.elements.namedItem('trip')?.value;
-    if (form.matches('[data-trip-enquiry]')) {
-      status.textContent = name
-        ? `Thank you, ${name}. Your ${trip ? `${trip} ` : ''}enquiry is ready in this preview.`
-        : 'Your enquiry is ready in this preview.';
-    } else {
-      status.textContent = name
-        ? `Thank you, ${name}. Your feedback is ready in this preview.`
-        : 'Your feedback is ready in this preview.';
-    }
-    form.reset();
-  });
+  const slides=[...document.querySelectorAll('.hero-slide')];const dots=document.querySelector('.slide-dots');if(!slides.length||!dots)return;
+  let index=0,timer=0;const carousel=document.querySelector('.hero-slides');
+  const buttons=slides.map((_,i)=>{const b=document.createElement('button');b.className='slide-dot'+(i===0?' active':'');b.type='button';b.setAttribute('aria-label',`Show slide ${i+1}`);b.addEventListener('click',()=>show(i));dots.append(b);return b});
+  function show(next){index=(next+slides.length)%slides.length;slides.forEach((s,i)=>{s.classList.toggle('active',i===index);s.setAttribute('aria-hidden',String(i!==index))});buttons.forEach((b,i)=>{b.classList.toggle('active',i===index);if(i===index)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')})}
+  const stop=()=>{window.clearInterval(timer);timer=0};const start=()=>{stop();if(!document.hidden&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)timer=window.setInterval(()=>show(index+1),6500)};
+  document.querySelector('.slide-arrow.prev')?.addEventListener('click',()=>{show(index-1);start()});document.querySelector('.slide-arrow.next')?.addEventListener('click',()=>{show(index+1);start()});
+  carousel.addEventListener('mouseenter',stop);carousel.addEventListener('mouseleave',start);carousel.addEventListener('focusin',stop);carousel.addEventListener('focusout',start);document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+  let touchStart=0;carousel.addEventListener('touchstart',e=>{touchStart=e.changedTouches[0].clientX},{passive:true});carousel.addEventListener('touchend',e=>{const delta=e.changedTouches[0].clientX-touchStart;if(Math.abs(delta)>45){show(index+(delta<0?1:-1));start()}},{passive:true});
+  show(0);start();
 });
