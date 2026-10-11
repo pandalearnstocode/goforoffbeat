@@ -32,3 +32,7 @@ section[id]{scroll-margin-top:92px}.section-head .button{flex-shrink:0}
   .form-card{padding:16px}
   .service-list,.all-services{grid-template-columns:1fr}
 }
+.credits-list{list-style:none;padding:0;margin:0;max-width:900px}
+.credits-list li{padding:17px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.75}
+.credits-list li:first-child{border-top:1px solid var(--line)}
+.credits-list a{color:var(--green);text-decoration:underline;text-underline-offset:3px}
